@@ -10,16 +10,19 @@ export async function getPolygonData() {
         low: [],
         volume: [],
     }
+    let start = '2021-09-01',
+        end = '2021-09-13',
+        range = 'day'
+    //multiplier (in this case 1 is for 1 day candle)
+
     try {
-        return await axios.get('https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2021-09-01/2021-09-13?adjusted=true&sort=asc&limit=5000&apiKey=XJSiWX8uu09NreaDDbnpgaIoBNyEZbK9')
+        return await axios.get(`https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/${range}/${start}/${end}?adjusted=true&sort=asc&limit=5000&apiKey=XJSiWX8uu09NreaDDbnpgaIoBNyEZbK9`)
             .then((resp) => {
                 returnObj['label'] = resp.data['ticker']
                 console.log('resp', resp.data)
                 for (let i = 0; i < resp.data.results.length; i++) {
                     let curr = resp.data.results[i]
                     let date = new Date(curr['t']);
-
-
                     returnObj['timeLabel'].push(date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear())
                     // returnObj['timeLabel'].push(getUTCDate(curr['t']))
                     returnObj['close'].push(curr['c'])
