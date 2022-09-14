@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export async function getPolygonData() {
+export async function getPolygonData(searchCriteria) {
     let returnObj = {
         ticker: '',
         data: [],

@@ -54,7 +54,8 @@ const Bargraph = () => {
                     color: resp['color']
                 })
             })
-    }, [data])
+        // }, [data])
+    }, data)
 
     return (
         <div className="App" style={{ width: '800px', height: '400px' }}>
