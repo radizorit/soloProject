@@ -2,15 +2,11 @@ import axios from 'axios'
 
 export async function getPolygonData() {
     let returnObj = {
-        label: '',
-        timeLabel: [],
-        close: [],
-        open: [],
-        high: [],
-        low: [],
-        volume: [],
+        ticker: '',
+        data: [],
+        color: []
     }
-    let start = '2021-09-01',
+    let start = '2021-08-01',
         end = '2021-09-13',
         range = 'day'
     //multiplier (in this case 1 is for 1 day candle)
@@ -18,25 +14,30 @@ export async function getPolygonData() {
     try {
         return await axios.get(`https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/${range}/${start}/${end}?adjusted=true&sort=asc&limit=5000&apiKey=XJSiWX8uu09NreaDDbnpgaIoBNyEZbK9`)
             .then((resp) => {
-                returnObj['label'] = resp.data['ticker']
-                console.log('resp', resp.data)
+                returnObj['ticker'] = resp.data.ticker
                 for (let i = 0; i < resp.data.results.length; i++) {
                     let curr = resp.data.results[i]
                     let date = new Date(curr['t']);
-                    returnObj['timeLabel'].push(date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear())
-                    // returnObj['timeLabel'].push(getUTCDate(curr['t']))
-                    returnObj['close'].push(curr['c'])
-                    returnObj['open'].push(curr['o'])
-                    returnObj['high'].push(curr['h'])
-                    returnObj['low'].push(curr['l'])
-                    returnObj['volume'].push(curr['v'])
+                    let setObj = {
+                        x: date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear(),
+                        o: curr['o'],
+                        h: curr['h'],
+                        l: curr['l'],
+                        c: curr['c'],
+                        s: [curr['o'], curr['c']]
+                    }
+                    returnObj['data'].push(setObj)
+
+                    if (curr['o'] > curr['c']) {
+                        returnObj['color'].push('red')
+                    } else {
+                        returnObj['color'].push('green')
+                    }
+                    //if open > close then red else green
                 }
-                console.log('returnObj', returnObj)
                 return returnObj
-                //put all data in an array
-                //put all dates in another array
             })
     } catch (err) {
-        console.log(err + 'err')
+        console.log('err', err)
     }
 }

@@ -1,14 +1,13 @@
 import React from 'react'
 
 import Bargraph from '../components/Bar'
+import DisplayMessageForm from '../components/DisplayMessageForm'
 
 const Chart = () => {
     return (
         <div>
-            {/* {this.state.text} */}
             <Bargraph />
-            {/* {this.renderChart()} */}
-
+            <DisplayMessageForm />
         </div>
     )
 }

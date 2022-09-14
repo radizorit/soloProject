@@ -22,47 +22,64 @@ ChartJS.register(
 
 const Bargraph = () => {
     const [data, setData] = useState({
-        tickerName: 'TICKER',
-        label: ["Jan", "Feb", "March", "April", "May", "June", "July", "August", "September", "Oct", "Nov", "Dec"],
-        close: [10, 20, 30, 42, 51, 82, 31, 59, 61, 73, 91, 58],
-        colors: ['red', 'blue', 'yellow', 'green']
+        ticker: '',
+        data: [
+            {
+
+                x: '8/31/2022',
+                o: 1.25,
+                h: 1.35,
+                l: 1.00,
+                c: 1.10,
+                s: [1.25, 1.1]
+            },
+            {
+                x: '9/01/2022',
+                o: 1.50,
+                h: 1.60,
+                l: 1.40,
+                c: 1.35,
+                s: [1.5, 1.35]
+            }
+        ],
+        color: ['green', 'red']
     })
-    // const [tickerName, setTickerName] = useState('TICKER')
-    // const [label, setLabels] = useState(["Jan", "Feb", "March", "April", "May", "June", "July", "August", "September", "Oct", "Nov", "Dec"])
-    // const [datasets, setDatasets] = useState([10, 20, 30, 42, 51, 82, 31, 59, 61, 73, 91, 58])
 
     useEffect(() => {
         getPolygonData()
             .then((resp) => {
                 setData({
-                    tickerName: resp['label'],
-                    label: resp['timeLabel'],
-                    close: resp['close']
+                    ticker: resp['ticker'],
+                    data: resp['data'],
+                    color: resp['color']
                 })
-                // setDatasets(resp['close']);
-                // setLabels(resp['timeLabel']);
-                // setTickerName(resp['label'])
             })
+        // }, [data])
     }, data)
-    // getPolygonData()
 
     return (
-        <div className="App" style={{ width: '800px', height: '800px' }}>
+        <div className="App" style={{ width: '800px', height: '400px' }}>
             <Bar
                 data={{
-                    // labels: ["Jan", "Feb", "March", "April", "May", "June", "July", "August", "September", "Oct", "Nov", "Dec"],
-                    labels: data['label'],
-                    // datasets: [this.state.datasets],
-                    datasets: [
-                        {
-                            label: data['tickerName'],
-                            data: data['close'],
-                            borderColor: 'rgb(53, 162, 235)',
-                            backgroundColor: 'rgba(53, 162, 235, 0.4)',
-                        }
-                    ],
+                    datasets: [{
+                        label: data['ticker'],
+                        // label: 'AAPL',
+                        // data: data['data']
+                        data: data['data'],
+                        backgroundColor: data['color'],
+                        borderColor: data['color']
+                    }],
                 }}
                 options={{
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    parsing: {
+                        xAxisKey: 'x',
+                        yAxisKey: 's'
+                    },
                     responsive: true,
                     plugins: {
                         legend: {
