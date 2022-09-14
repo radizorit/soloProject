@@ -1,17 +1,17 @@
 const db = require('../models/message');
 
-
-
 module.exports.updateMessage = async (req, res) => {
-    try {
-        console.log('req.body', req.body)
-        console.log('req.params', req.params)
-        console.log('req.query', req.query)
-
-        console.log('update completed from controllers')
-    } catch (e) {
-        console.error(e, 'controllers error updating')
-    }
+    let updateMessageQuery = `UPDATE MESSAGES
+    SET messageid = ${req.params.id}, name= '${req.body.name}', message = '${req.body.message}', communication = '${req.body.communication}', status = 'update'
+    WHERE MessageID = ${req.params.id};`
+    return db
+        .query(updateMessageQuery)
+        .then((resp) => {
+            console.log('resp of updateMessage', resp)
+        })
+        .catch((err) => {
+            console.error(err)
+        })
 }
 
 module.exports.deleteMessage = async (req, res) => {
