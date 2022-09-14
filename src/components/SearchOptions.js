@@ -1,88 +1,85 @@
-import React, { useState } from 'react';
-import dayjs from 'dayjs';
-
+import React, { useEffect, useRef, useState } from 'react'
+import { DateRange } from 'react-date-range'
 import { Stack, TextField } from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import format from 'date-fns/format'
+import { addDays } from 'date-fns'
 
+import 'react-date-range/dist/styles.css'
+import 'react-date-range/dist/theme/default.css'
 
-export default function SearchOptions() {
-  const [ticker, setTicker] = useState('APPL');
+const SearchOptions = () => {
 
-  const [start, setStart] = useState(
-    dayjs('2022-08-18T21:11:54')
-  );
+  // date state
+  const [range, setRange] = useState([
+    {
+      startDate: new Date(),
+      endDate: addDays(new Date(), 7),
+      key: 'selection'
+    }
+  ])
 
-  const [end, setEnd] = useState(
-    dayjs('2022-09-14T21:11:54')
-  );
+  const [ticker, setTicker] = useState('APPL')
+  // open close
+  const [open, setOpen] = useState(false)
 
-  return (
-    // fix the date, it keeps going to most recent date
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Stack spacing={3}>
-        <TextField
-          onChange={(e) => setTicker()}
-          value={ticker}
-          label='Ticker'
-          variant='outlined'
-          color='secondary'
-          fullWidth
-        />
-        <DesktopDatePicker
-          label="Start Date"
-          inputFormat="YYYY-MM-DD"
-          value={start}
-          onChange={(e) => setStart()}
-          renderInput={(params) => <TextField {...params} />}
-        />
-        <DesktopDatePicker
-          label="End Date"
-          inputFormat="YYYY-MM-DD"
-          value={end}
-          onChange={(e) => setEnd()}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      </Stack>
-    </LocalizationProvider>
-  );
-}
+  // get the target element to toggle 
+  const refOne = useRef(null)
 
+  useEffect(() => {
+    // event listeners
+    document.addEventListener("keydown", hideOnEscape, true)
+    document.addEventListener("click", hideOnClickOutside, true)
+  }, [])
 
-/**
- import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+  // hide dropdown on ESC press
+  const hideOnEscape = (e) => {
+    // console.log(e.key)
+    if (e.key === "Escape") {
+      setOpen(false)
+    }
+  }
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200,
-  },
-}));
-
-export default function DatePickers() {
-  const classes = useStyles();
+  // Hide on outside click
+  const hideOnClickOutside = (e) => {
+    // console.log(refOne.current)
+    // console.log(e.target)
+    if (refOne.current && !refOne.current.contains(e.target)) {
+      setOpen(false)
+    }
+  }
 
   return (
-    <form className={classes.container} noValidate>
+
+    <div>
       <TextField
-        id="date"
-        label="Birthday"
-        type="date"
-        defaultValue="2017-05-24"
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
+        onChange={(e) => setTicker(e.target.value)}
+        value={ticker}
+        label='Ticker'
+        variant='outlined'
+        color='secondary'
       />
-    </form>
-  );
+      <input
+        value={`${format(range[0].startDate, "MM/dd/yyyy")} to ${format(range[0].endDate, "MM/dd/yyyy")}`}
+        readOnly
+        className="inputBox"
+        onClick={() => setOpen(open => !open)}
+      />
+      <div ref={refOne}>
+        {/* {open && */}
+        <DateRange
+          onChange={item => setRange([item.selection])}
+          editableDateInputs={true}
+          moveRangeOnFirstSelection={false}
+          ranges={range}
+          months={1}
+          direction="horizontal"
+          className="calendarElement"
+        />
+        {/* } */}
+      </div>
+
+    </div>
+  )
 }
- */
+
+export default SearchOptions
