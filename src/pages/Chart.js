@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 
-import Bargraph from '../components/Bar'
 import DisplayForm from '../components/DisplayForm'
 import DisplayMessages from '../components/DisplayMessages'
 import SearchOptions from '../components/SearchOptions'
@@ -23,7 +22,6 @@ const Chart = () => {
              * MAKE SURE SEARCHOPTIONS HAS PRESET CRITERIAS LOL
             */}
             <SearchOptions />
-            <Bargraph />
             <DisplayForm />
             <DisplayMessages props={messageData} />
         </div>
