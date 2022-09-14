@@ -3,8 +3,6 @@ import moment from 'moment-timezone';
 
 export function postMessage(messageData) {
     try {
-        // console.log('hello messageData', messageData)
-        console.log('sending...', messageData)
         axios.post('http://localhost:5000/api/1/communications/message/create', {
             name: messageData['name'],
             message: messageData['message'],
@@ -24,7 +22,6 @@ export async function getMessage() {
         // console.log('sending...')
         return await axios.get('http://localhost:5000/api/1/communications/message/get')
             .then((resp) => {
-                console.log('resp', resp.data)
                 return resp.data
             })
     } catch (e) {
