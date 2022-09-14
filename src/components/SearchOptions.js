@@ -3,7 +3,26 @@ import { DateRange } from 'react-date-range'
 import { Button, TextField } from '@mui/material';
 import format from 'date-fns/format'
 import { addDays } from 'date-fns'
-import Bargraph from './Bargraph'
+// import Bargraph from './Bargraph'
+import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
@@ -13,6 +32,7 @@ const SearchOptions = () => {
 
   const [data, setData] = useState({
     ticker: 'Default',
+    // range: {}
     prices: [
       {
         x: '8/31/2022',
@@ -43,7 +63,7 @@ const SearchOptions = () => {
     }
   ])
 
-  const [ticker, setTicker] = useState('AAPL')
+  const [tickerPrices, setTickerPrices] = useState('AAPL')
   // open close
   const [open, setOpen] = useState(false)
 
@@ -74,10 +94,12 @@ const SearchOptions = () => {
   }
 
   const handleSubmit = (e) => {
-    getPolygonData([range, ticker])
+    // setData({ ticker: tickerPrices, range: range })
+    getPolygonData([range, tickerPrices])
       .then((resp) => {
+        console.log(resp)
         setData(resp)
-        console.log(data, 'data')
+        // console.log(data, 'data')
       })
   }
 
@@ -88,8 +110,8 @@ const SearchOptions = () => {
           {/* maybe put textfield and the input for a flex box for STYLING */}
           <TextField
             style={{ width: 175 }}
-            onChange={(e) => setTicker(e.target.value)}
-            value={ticker}
+            onChange={(e) => setTickerPrices(e.target.value)}
+            value={tickerPrices}
             label='Ticker'
             variant='outlined'
             color='secondary'
@@ -116,7 +138,72 @@ const SearchOptions = () => {
         <Button onClick={(e) => handleSubmit(e)}>Click me to submit</Button>
       </form>
 
-      <Bargraph props={data} />
+      {/* <Bargraph props={data} /> */}
+      <div className="App" style={{ width: '800px', height: '400px' }}>
+        <Bar
+          data={{
+            datasets: [{
+              label: data['ticker'],
+              data: data['prices'],
+              backgroundColor: data['color'],
+              borderColor: data['color']
+            }],
+            // datasets: [{
+            //     label: 'AAPL',
+            //     data: [
+            //         {
+
+            //             x: '8/31/2022',
+            //             o: 1.25,
+            //             h: 1.35,
+            //             l: 1.00,
+            //             c: 1.10,
+            //             s: [1.25, 1.1]
+            //         },
+            //         {
+            //             x: '9/01/2022',
+            //             o: 1.50,
+            //             h: 1.60,
+            //             l: 1.40,
+            //             c: 1.35,
+            //             s: [1.5, 1.35]
+            //         },
+            //         {
+            //             x: '9/02/2022',
+            //             o: 1.50,
+            //             h: 1.60,
+            //             l: 1.40,
+            //             c: 1.35,
+            //             s: [1.5, 1.35]
+            //         }
+            //     ],
+            //     backgroundColor: ['red', 'green'],
+            //     borderColor: ['red', 'green']
+            // }],
+          }}
+          options={{
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            },
+            parsing: {
+              xAxisKey: 'x',
+              yAxisKey: 's'
+            },
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Chart.js Bar Chart',
+              },
+            }
+          }}
+        />
+      </div>
     </div>
   )
 }

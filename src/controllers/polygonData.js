@@ -28,7 +28,7 @@ export async function getPolygonData(searchCriteria) {
         return await axios.get(
             `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/${range}/${start}/${end}?adjusted=true&sort=asc&limit=5000&apiKey=XJSiWX8uu09NreaDDbnpgaIoBNyEZbK9`)
             .then((resp) => {
-
+                console.log(resp)
                 returnObj['ticker'] = resp.data.ticker
                 for (let i = 0; i < resp.data.results.length; i++) {
                     let curr = resp.data.results[i]
@@ -41,7 +41,7 @@ export async function getPolygonData(searchCriteria) {
                         c: curr['c'],
                         s: [curr['o'], curr['c']]
                     }
-                    returnObj['data'].push(setObj)
+                    returnObj['prices'].push(setObj)
 
                     if (curr['o'] > curr['c']) {
                         returnObj['color'].push('red')

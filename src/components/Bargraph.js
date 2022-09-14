@@ -19,8 +19,10 @@ ChartJS.register(
     Legend
 );
 
+import { getPolygonData } from '../controllers/polygonData'
+
 const Bargraph = ({ props }) => {
-    console.log(props, 'props')
+    const [chartData, setChartData] = useState(props)
     // const [data, setData] = useState({
     //     ticker: '',
     //     data: [
@@ -61,44 +63,44 @@ const Bargraph = ({ props }) => {
         <div className="App" style={{ width: '800px', height: '400px' }}>
             <Bar
                 data={{
-                    // datasets: [{
-                    //     label: props['ticker'],
-                    //     data: props['prices'],
-                    //     backgroundColor: props['color'],
-                    //     borderColor: props['color']
-                    // }],
                     datasets: [{
-                        label: 'AAPL',
-                        data: [
-                            {
-
-                                x: '8/31/2022',
-                                o: 1.25,
-                                h: 1.35,
-                                l: 1.00,
-                                c: 1.10,
-                                s: [1.25, 1.1]
-                            },
-                            {
-                                x: '9/01/2022',
-                                o: 1.50,
-                                h: 1.60,
-                                l: 1.40,
-                                c: 1.35,
-                                s: [1.5, 1.35]
-                            },
-                            {
-                                x: '9/02/2022',
-                                o: 1.50,
-                                h: 1.60,
-                                l: 1.40,
-                                c: 1.35,
-                                s: [1.5, 1.35]
-                            }
-                        ],
-                        backgroundColor: ['red', 'green'],
-                        borderColor: ['red', 'green']
+                        label: chartData['ticker'],
+                        data: chartData['prices'],
+                        backgroundColor: chartData['color'],
+                        borderColor: chartData['color']
                     }],
+                    // datasets: [{
+                    //     label: 'AAPL',
+                    //     data: [
+                    //         {
+
+                    //             x: '8/31/2022',
+                    //             o: 1.25,
+                    //             h: 1.35,
+                    //             l: 1.00,
+                    //             c: 1.10,
+                    //             s: [1.25, 1.1]
+                    //         },
+                    //         {
+                    //             x: '9/01/2022',
+                    //             o: 1.50,
+                    //             h: 1.60,
+                    //             l: 1.40,
+                    //             c: 1.35,
+                    //             s: [1.5, 1.35]
+                    //         },
+                    //         {
+                    //             x: '9/02/2022',
+                    //             o: 1.50,
+                    //             h: 1.60,
+                    //             l: 1.40,
+                    //             c: 1.35,
+                    //             s: [1.5, 1.35]
+                    //         }
+                    //     ],
+                    //     backgroundColor: ['red', 'green'],
+                    //     borderColor: ['red', 'green']
+                    // }],
                 }}
                 options={{
                     scales: {
