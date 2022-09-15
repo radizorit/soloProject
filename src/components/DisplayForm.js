@@ -16,7 +16,7 @@ const DisplayForm = () => {
 
     return (
         <Card style={{ maxWidth: 450, padding: "20px 40px 0px 0px", margin: "0 auto" }}>
-            <Typography variant='h3'>Send a message!</Typography>
+            <Typography variant='h4'>Record your trading thoughts</Typography>
             <form onSubmit={handleSubmit} style={{ maxWidth: 450, padding: "20px 5px", margin: "0 auto" }}>
                 <ul>
                     <TextField

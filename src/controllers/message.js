@@ -15,7 +15,6 @@ export function postMessage(messageData) {
     }
 }
 
-
 export async function getMessage() {
     try {
         // console.log('hello messageData', messageData)
@@ -28,7 +27,6 @@ export async function getMessage() {
         console.log(e, 'unsuccessful')
     }
 }
-
 
 export async function deleteMessage(messageid) {
     try {

@@ -1,0 +1,22 @@
+.flex-grid {
+    display: flex;
+}
+
+.col {
+    flex: 1;
+}
+
+.pastMessages {
+    background-color: white;
+    border: 1px solid rgb(0, 0, 0);
+    margin: 5px;
+    position: relative;
+    min-width: 280px;
+
+    /* grid-template-columns: 1fr 1fr 1fr; */
+    grid-template-columns:
+        repeat(auto-fit, minmax(280px, 2fr));
+    /* flex-basis: auto; */
+    /* flex-grow: 1; */
+    /* flex: 1; */
+}
