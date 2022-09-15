@@ -46,8 +46,9 @@ module.exports.getMessages = async (req, res) => {
 }
 
 module.exports.createMessage = async (req, res) => {
+    let randomId = Math.floor(Math.random() * 100)
     let addMessageQuery =
-        `INSERT INTO MESSAGES VALUES(5, '${req.body.name}', '${req.body.message}', '${req.body.communication}', '${req.body.timeStamp}', '${req.body.status}')`
+        `INSERT INTO MESSAGES VALUES(${randomId}, '${req.body.name}', '${req.body.message}', '${req.body.communication}', '${req.body.timeStamp}', '${req.body.status}')`
     return db
         .query(addMessageQuery)
         .then(resp => {

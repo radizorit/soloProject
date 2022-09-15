@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react'
 import { Grid, Button, Typography, Card, TextField } from '@mui/material';
 import { postMessage } from '../controllers/message';
-const DisplayForm = () => {
-    const [messageData, setMessageData] = useState({
+const DisplayForm = ({ messageData, setMessageData }) => {
+    const [postData, setPostData] = useState({
         name: '',
         message: '',
         communication: '',
@@ -11,7 +11,10 @@ const DisplayForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault(); //this prevents refreshing page
-        postMessage(messageData)
+        console.log('postData', postData)
+        setMessageData([...messageData, postData])
+        console.log('messageData', messageData)
+        postMessage(postData)
     }
 
     return (
@@ -20,21 +23,21 @@ const DisplayForm = () => {
             <form onSubmit={handleSubmit} style={{ maxWidth: 450, padding: "20px 5px", margin: "0 auto" }}>
                 <ul>
                     <TextField
-                        onChange={(e) => setMessageData({ ...messageData, name: e.target.value })}
+                        onChange={(e) => setPostData({ ...postData, name: e.target.value })}
                         label='Name'
                         variant='outlined'
                         color='secondary'
                         fullWidth
                     />
                     <TextField
-                        onChange={(e) => setMessageData({ ...messageData, message: e.target.value })}
+                        onChange={(e) => setPostData({ ...postData, message: e.target.value })}
                         label='Message'
                         variant='outlined'
                         color='secondary'
                         fullWidth
                     />
                     <TextField
-                        onChange={(e) => setMessageData({ ...messageData, communication: e.target.value })}
+                        onChange={(e) => setPostData({ ...postData, communication: e.target.value })}
                         label='Communication'
                         variant='outlined'
                         color='secondary'

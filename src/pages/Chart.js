@@ -18,8 +18,8 @@ const Chart = () => {
     return (
         <div>
             <SearchOptions />
-            <DisplayForm />
-            <DisplayMessages props={messageData} />
+            <DisplayForm messageData={messageData} setMessageData={setMessageData} />
+            <DisplayMessages messageData={messageData} setMessageData={setMessageData} />
         </div>
 
     )
