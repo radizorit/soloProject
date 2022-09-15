@@ -1,5 +1,8 @@
 const db = require('../models/message');
-
+const accountSid = process.env.TWILIO_SID;
+const authToken = process.env.TWILIO_AUTH;
+const from = process.env.TWILIO_FROM;
+// const client = require('twilio')(accountSid, authToken);
 /**
  *
  * DROP TABLE MESSAGES 
@@ -59,7 +62,13 @@ module.exports.getMessages = async (req, res) => {
 }
 
 module.exports.createMessage = async (req, res) => {
-    console.log('req.body', req.body)
+    // await client.messages
+    //     .create({
+    //         body: req.body.message,
+    //         from: from,
+    //         to: '+16267823475'
+    //     })
+    //     .then((message) => console.log(message))
     let randomId = Math.floor(Math.random() * 100)
     let addMessageQuery =
         `INSERT INTO MESSAGES VALUES(${randomId}, '${req.body.name}', '${req.body.message}', '${req.body.communication}', '${req.body.timeStamp}', '${req.body.status}', '${req.body.image}')`
