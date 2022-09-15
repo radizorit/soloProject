@@ -1,5 +1,18 @@
 const db = require('../models/message');
 
+/**
+ *
+ * DROP TABLE MESSAGES 
+    CREATE TABLE Messages(
+    MessageID int,
+    name varchar(255),
+    message varchar(255),
+    communication varchar(255),
+    timestamp Date,
+    status varchar(255),
+    image varchar(5000)
+    );
+ */
 module.exports.updateMessage = async (req, res) => {
     let updateMessageQuery = `UPDATE MESSAGES
     SET messageid = ${req.params.id}, name= '${req.body.name}', message = '${req.body.message}', communication = '${req.body.communication}', status = 'update'
@@ -46,9 +59,10 @@ module.exports.getMessages = async (req, res) => {
 }
 
 module.exports.createMessage = async (req, res) => {
+    console.log('req.body', req.body)
     let randomId = Math.floor(Math.random() * 100)
     let addMessageQuery =
-        `INSERT INTO MESSAGES VALUES(${randomId}, '${req.body.name}', '${req.body.message}', '${req.body.communication}', '${req.body.timeStamp}', '${req.body.status}')`
+        `INSERT INTO MESSAGES VALUES(${randomId}, '${req.body.name}', '${req.body.message}', '${req.body.communication}', '${req.body.timeStamp}', '${req.body.status}', '${req.body.image}')`
     return db
         .query(addMessageQuery)
         .then(resp => {

@@ -7,11 +7,24 @@ export function postMessage(messageData) {
             name: messageData['name'],
             message: messageData['message'],
             communication: messageData['communication'],
+            image: messageData['image'],
             timeStamp: moment().tz('America/Los_Angeles').format(),
             status: 'queue',
         })
     } catch (e) {
         console.log(e, 'unsuccessful')
+    }
+}
+
+export function imageReader(image) {
+    try {
+        const reader = new FileReader();
+        reader.readAsDataURL(image);
+        reader.onloadend = () => {
+            return reader.result
+        }
+    } catch (e) {
+        console.error(e, 'imageReader')
     }
 }
 

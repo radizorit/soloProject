@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 //time related imports
 import { DateRange } from 'react-date-range'
 import { Select, InputLabel, MenuItem, FormControl, Button, TextField } from '@mui/material';
@@ -33,6 +33,7 @@ import 'react-date-range/dist/theme/default.css'
 import { getPolygonData } from '../controllers/polygonData'
 const SearchOptions = () => {
   const [timeframe, setTimeframe] = useState('day');
+
 
   const [data, setData] = useState({
     ticker: 'Default',

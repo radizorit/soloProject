@@ -7,6 +7,7 @@ import { getMessage } from '../controllers/message';
 
 const Chart = () => {
     const [messageData, setMessageData] = useState([])
+    const [done, setDone] = useState(false)
 
     useEffect(() => {
         getMessage()
@@ -18,8 +19,8 @@ const Chart = () => {
     return (
         <div>
             <SearchOptions />
-            <DisplayForm messageData={messageData} setMessageData={setMessageData} />
-            <DisplayMessages messageData={messageData} setMessageData={setMessageData} />
+            <DisplayForm messageData={messageData} setMessageData={setMessageData} done={done} setDone={setDone} />
+            <DisplayMessages messageData={messageData} setMessageData={setMessageData} done={done} setDone={setDone} />
         </div>
 
     )
