@@ -2,13 +2,15 @@ import axios from 'axios'
 import moment from 'moment-timezone';
 
 export function postMessage(messageData) {
+
     try {
         axios.post('http://localhost:5000/api/1/communications/message/create', {
+            messageid: messageData['messageid'],
             name: messageData['name'],
             message: messageData['message'],
             communication: messageData['communication'],
             image: messageData['image'],
-            timeStamp: moment().tz('America/Los_Angeles').format(),
+            timestamp: moment().tz('America/Los_Angeles').format(),
             status: 'queue',
         })
     } catch (e) {
@@ -43,6 +45,7 @@ export async function getMessage() {
 
 export async function deleteMessage(messageid) {
     try {
+        console.log(messageid, 'messageid from deletion controller')
         axios.delete(`http://localhost:5000/api/1/communications/message/delete/${messageid}`)
     } catch (e) {
         console.error(e, 'troubles deleting in display message')

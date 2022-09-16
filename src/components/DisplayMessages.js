@@ -8,10 +8,9 @@ export default function DisplayMessage({ messageData, setMessageData, done, setD
         name: '',
         message: '',
         communication: '',
-        timeStamp: '',
+        timestamp: '',
         status: ''
     })
-    // console.log(messageData)
     const messageBeingUpdated = (e, fields) => {
         e.preventDefault(); //this prevents refreshing page
         setMessageData([...messageData, messageProvided])
@@ -21,6 +20,13 @@ export default function DisplayMessage({ messageData, setMessageData, done, setD
     const openMoreMessages = (e) => {
         e.preventDefault()
         setDone(true)
+    }
+
+    const updateDeletedState = (id) => {
+        deleteMessage(id)
+        let copiedMessageData = messageData
+        let filteredMessage = copiedMessageData.filter(allId => allId['messageid'] != id)
+        setMessageData(filteredMessage)
     }
     return (
         <Card style={{ padding: "20px 40px 0px 0px", margin: "0 auto" }}>
@@ -33,13 +39,6 @@ export default function DisplayMessage({ messageData, setMessageData, done, setD
                             <form style={{ margin: "0 auto" }}>
                                 <Typography>Message #:{i + 1}</Typography>
                                 <div className='justTextFields'>
-                                    <TextField
-                                        onChange={(e) => setMessageProvided({ ...messageProvided, id: e.target.value })}
-                                        defaultValue={fields.messageid}
-                                        label='id'
-                                        variant='outlined'
-                                        color='secondary'
-                                    />
                                     <TextField
                                         onChange={(e) => setMessageProvided({ ...messageProvided, name: e.target.value })}
                                         defaultValue={fields.name}
@@ -62,24 +61,24 @@ export default function DisplayMessage({ messageData, setMessageData, done, setD
                                         color='secondary'
                                     />
                                     <TextField
-                                        onChange={(e) => setMessageProvided({ ...messageProvided, status: e.target.value })}
-                                        defaultValue={fields.status}
-                                        label='Status'
+                                        onChange={(e) => setMessageProvided({ ...messageProvided, timestamp: e.target.value })}
+                                        defaultValue={fields.timestamp}
+                                        label='Timestamp'
                                         variant='outlined'
                                         color='secondary'
                                     />
                                     <Box
                                         component='img'
                                         alt='img'
+                                        style={{ maxWidth: '500px' }}
                                         src={fields.image}
                                     />
-                                    <Button fullWidth onClick={(e) => messageBeingUpdated(e, fields)}>Update message</Button>
+                                    <div>
+                                        <Button fullWidth style={{ maxHeight: '100px' }} onClick={(e) => messageBeingUpdated(e, fields)}>Update message</Button>
+                                        <Button fullWidth style={{ maxHeight: '100px' }} onClick={() => updateDeletedState(fields.messageid)}>Delete message</Button>
+                                    </div>
                                 </div>
                             </form>
-                            <div>
-                                <Button onClick={() => deleteMessage(fields.messageid)}>Delete message</Button>
-
-                            </div>
                         </ul>
                     )
                 })}

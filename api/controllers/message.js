@@ -1,8 +1,9 @@
+require('dotenv').config();
 const db = require('../models/message');
-const accountSid = process.env.TWILIO_SID;
-const authToken = process.env.TWILIO_AUTH;
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
 const from = process.env.TWILIO_FROM;
-// const client = require('twilio')(accountSid, authToken);
+const client = require('twilio')(accountSid, authToken);
 /**
  *
  * DROP TABLE MESSAGES 
@@ -62,16 +63,16 @@ module.exports.getMessages = async (req, res) => {
 }
 
 module.exports.createMessage = async (req, res) => {
-    // await client.messages
-    //     .create({
-    //         body: req.body.message,
-    //         from: from,
-    //         to: '+16267823475'
-    //     })
-    //     .then((message) => console.log(message))
-    let randomId = Math.floor(Math.random() * 100)
+    await client.messages
+        .create({
+            body: req.body.message,
+            from: from,
+            to: '+16267823475'
+        })
+        .then((message) => console.log('twilio sent successfully'))
+
     let addMessageQuery =
-        `INSERT INTO MESSAGES VALUES(${randomId}, '${req.body.name}', '${req.body.message}', '${req.body.communication}', '${req.body.timeStamp}', '${req.body.status}', '${req.body.image}')`
+        `INSERT INTO MESSAGES VALUES(${req.body.messageid}, '${req.body.name}', '${req.body.message}', '${req.body.communication}', '${req.body.timestamp}', '${req.body.status}', '${req.body.image}')`
     return db
         .query(addMessageQuery)
         .then(resp => {

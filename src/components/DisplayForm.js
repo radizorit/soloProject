@@ -2,34 +2,32 @@ import React, { useState, useRef } from 'react'
 import { Grid, Button, Typography, Card, TextField } from '@mui/material';
 import { postMessage, imageReader } from '../controllers/message';
 import Webcam from 'react-webcam'
+import moment from 'moment-timezone';
+
+import axios from 'axios'
+
 const DisplayForm = ({ messageData, setMessageData, done, setDone }) => {
     const [postData, setPostData] = useState({
+        messageid: Math.floor(Math.random() * 100) + 1,
         name: '',
         message: '',
         communication: '',
+        timestamp: moment().tz('America/Los_Angeles').format(),
         image: ''
     })
 
-    const [showWebcam, setShowWebcam] = useState(false)
-    const webRef = useRef(null)
-
-    const updateImage = () => {
-        // setPostData({ ...postData, image: webRef.current.getScreenshot().slice(23) })
-        setPostData({ ...postData, image: webRef.current.getScreenshot() })
-        setShowWebcam(!showWebcam)
-
+    const uploadImage = (files) => {
+        const data = new FormData()
+        data.append("file", files)
+        data.append("upload_preset", "ml_default")
+        axios.post('https://api.cloudinary.com/v1_1/dsk4jfd1t/image/upload',
+            data)
+            .then((response) => {
+                console.log(`response['data']['url']`, response['data']['url'])
+                // console.log(response)
+                setPostData({ ...postData, image: response['data']['url'] })
+            })
     }
-    const webcamHide = () => {
-        setShowWebcam(!showWebcam)
-    }
-
-    // const handleFileInputChange = (e) => {
-    //     e.preventDefault();
-    //     console.log('e.target.files[0]', e.target.files[0])
-    //     let imageUrl = imageReader(e.target.files[0])
-    //     console.log('imageUrl', imageUrl)
-    //     // setPostData({ ...postData, image: imageUrl })
-    // }
 
     const handleSubmit = (e) => {
         e.preventDefault(); //this prevents refreshing page
@@ -41,6 +39,17 @@ const DisplayForm = ({ messageData, setMessageData, done, setDone }) => {
         setDone(true)
     }
 
+    const [showWebcam, setShowWebcam] = useState(false)
+    const webRef = useRef(null)
+    const updateImage = () => {
+        // setPostData({ ...postData, image: webRef.current.getScreenshot().slice(23) })
+        setPostData({ ...postData, image: webRef.current.getScreenshot() })
+        setShowWebcam(!showWebcam)
+
+    }
+    const webcamHide = () => {
+        setShowWebcam(!showWebcam)
+    }
     return (
         <Card style={{ maxWidth: 450, padding: "20px 40px 0px 0px", margin: "0 auto" }}>
             <Typography variant='h4'>Record your trading thoughts</Typography>
@@ -68,7 +77,7 @@ const DisplayForm = ({ messageData, setMessageData, done, setDone }) => {
                         fullWidth
                     />
                     <Grid fullwidth='true' container direction="row">
-                        {/* <Button
+                        <Button
                             sx={{ width: '50%' }}
                             variant='outlined'
                             label='Image'
@@ -78,12 +87,14 @@ const DisplayForm = ({ messageData, setMessageData, done, setDone }) => {
                             Upload File
                             <input
                                 type='file'
-                                name='image'
+                                name='file'
                                 hidden
-                                onChange={handleFileInputChange}
+                                onChange={(event) => {
+                                    uploadImage(event.target.files[0])
+                                }}
                                 className='form-input'
                             />
-                        </Button> */}
+                        </Button>
                         <Button onClick={() => { webcamHide(); }}
                             sx={{ width: '50%' }}
                             variant='outlined'

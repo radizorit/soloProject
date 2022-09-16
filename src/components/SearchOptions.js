@@ -161,7 +161,7 @@ const SearchOptions = () => {
           </div>
 
 
-          <Button onClick={(e) => handleSubmit(e)}>Click me to submit</Button>
+          <Button onClick={(e) => handleSubmit(e)}>Click me to see chart data</Button>
         </form>
       </div>
 
